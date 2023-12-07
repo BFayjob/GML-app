@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Inventory Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: flex-start; /* Align items to the left */
+      align-items: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-right: 20px; /* Adjust margin as needed */
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    section {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .dashboard-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    #stockList {
+      overflow: hidden;
+      height: 100px; /* Set the initial height to show only a few items */
+      transition: height 0.5s ease;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .show-more-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .limited-rows {
+      max-height: 100px; /* Set the max height for the limited rows */
+      overflow: hidden;
+    }
+
+    .input-sales-form {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stock Inventory Dashboard</h1>
+  </header>
+  <nav>
+    <div class="dropdown">
+      <span>Menu</span>
+      <div class="dropdown-content">
+        <a href="#">Dashboard</a>
+        <a href="#">Input Stock</a>
+        <a href="#">sales records</a>
+        <a href="#">stock records</a>
+        <a href="#">Logout</a>
+        <a href="#">Settings</a>
+      </div>
+    </div>
+    <div class="navbar">
+        <div class="dropdown">
+          <select class="dropbtn" id="locationDropdown">Select Location</button>
+          <div class="dropdown-content" id="locationOptions">
+            <option value="Origan">Origan</option>
+            <option value="Ijuri">Ijuri</option>
+            <option value="CeleNiza reception">CeleNiza reception</option>
+            <option value="CeleNiza Warehouse">CeleNiza Warehouse</option>
+            <!-- Your location options go here -->
+        </select>
+          </div>
+        </div>
+      
+        <div class="selected-location" id="selectedLocation">Selected Location: None</div>
+      </div>
+      
+      <!-- ... (remaining HTML code) -->
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const locationDropdown = document.getElementById('locationDropdown');
+          const locationOptions = document.getElementById('locationOptions');
+          const selectedLocation = document.getElementById('selectedLocation');
+      
+          // Function to update the selected location
+          function updateSelectedLocation() {
+            const selectedValue = locationDropdown.value;
+            selectedLocation.textContent = `Selected Location: ${selectedValue}`;
+          }
+      
+          // Event listener for the location dropdown change
+          locationDropdown.addEventListener('change', function () {
+            updateSelectedLocation();
+          });
+      
+          // Event listener for the initial update (on page load)
+          document.addEventListener('DOMContentLoaded', function () {
+            updateSelectedLocation();
+          });
+        });
+      </script>
+  </nav>
+
+<section>
+  <!-- Input Sales Form -->
+  <div class="sales-form">
+    <h2>Sales Form for KG </h2>
+    <form id="salesForm">
+      <label for="itemBrand">Item Brand:</label>
+      <select id="itemBrand" onchange="updateItemSizes(); updateUnitPrice();">
+        <option value="bluecrown">Bluecrown</option>
+        <option value="ecofloat">Ecofloat</option>
+        <option value="ace">Ace</option>
+        <option value="aller-aqua">Aller Aqua</option>
+        <option value="vital">Vital</option>
+        <option value="coppens">Coppens</option>
+        <option value="alpha">Alpha</option>
+        <option value="ovulin">Ovulin</option>
+      </select>
+
+      <label for="itemSize">Item Size:</label>
+      <select id="itemSize" onchange="updateUnitPrice();">
+        <!-- Sizes for each brand will be dynamically populated using JavaScript -->
+      </select>
+
+      <label for="metric">Metric:</label>
+      <select id="metric" onchange="updateUnitPrice();">
+        <option value="bags">Bags</option>
+        <option value="kg">Kilograms</option>
+        <option value="ml">Milliliters</option>
+        <option value="halfbag">Half Bag</option>
+      </select>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" oninput="calculateTotal();" required>
+
+      <label for="unitPrice">Unit Price:</label>
+      <input type="text" id="unitPrice" readonly>
+
+      <label for="totalCost">Total Cost:</label>
+      <input type="text" id="totalCost" readonly>
+
+      <button type="submit">Confirm and Upload</button>
+    </form>
+  </div>
+
+  <script>
+    const PRICES = {
+      bluecrown: { '2mm': 14700, '3mm': 13600, '4mm': 13200, '6mm': 12600, '9mm': 12150 },
+      ecofloat: { '3mm': 10950, '4mm': 10650, '6mm': 10100, '9mm': 9900 },
+      ace: { '3mm': 9900, '4mm': 9200, '6mm': 8700, '8mm': 8700 },
+      'aller-aqua': { '0.2mm': 25000, '0.4mm': 25000, '0.5mm': 25000, '0.9mm': 25000, '1.3mm': 24000, '2mm': 27000, '3mm': 26000, '4mm': 24500 },
+      vital: { '2mm': 0, '3mm': 0, '4mm': 0, '6mm': 0, '9mm': 0 },
+      coppens: { '0.2mm': 23600, '0.3mm': 23600, '0.5mm': 23600, '0.8mm': 23600, '1.2mm': 23600, '1.5mm': 23200, '2mm (42%)': 0, '2mm (45%)': 44500 },
+      alpha: { '4mm': 14750, '6mm': 14100, '8mm': 13500 },
+      ovulin: { 'Bottle':18000, 'millileter': 4500 /* No sizes for ovulin */ },
+    };
+
+    function updateItemSizes() {
+      const itemBrandSelect = document.getElementById('itemBrand');
+      const itemSizeSelect = document.getElementById('itemSize');
+      const selectedBrand = itemBrandSelect.value;
+
+      // Clear previous options
+      itemSizeSelect.innerHTML = '';
+
+      // Populate item sizes based on selected brand
+      const sizes = PRICES[selectedBrand] ? Object.keys(PRICES[selectedBrand]) : [];
+      sizes.forEach(size => {
+        const option = document.createElement('option');
+        option.value = size;
+        option.textContent = size;
+        itemSizeSelect.appendChild(option);
+      });
+    }
+
+    function updateUnitPrice() {
+    const itemBrandSelect = document.getElementById('itemBrand');
+    const itemSizeSelect = document.getElementById('itemSize');
+    const metricSelect = document.getElementById('metric');
+    const unitPriceInput = document.getElementById('unitPrice');
+
+    const selectedBrand = itemBrandSelect.value;
+    const selectedSize = itemSizeSelect.value;
+    const selectedMetric = metricSelect.value;
+
+    if (selectedBrand === 'ovulin') {
+      unitPriceInput.value = PRICES[selectedBrand] && PRICES[selectedBrand][selectedSize] || 0;
+    } else {
+      unitPriceInput.value = PRICES[selectedBrand] && PRICES[selectedBrand][selectedSize] || 0;
+    }
+  }
+
+  function calculateTotalForHalfBag() {
+    const metricSelect = document.getElementById('metric');
+    const isHalfBag = metricSelect.value === 'halfbag';
+
+    if (isHalfBag) {
+      // Calculate the price of half bag: (unit price / 2) + 50
+      calculateTotal();
+    }
+  }
+
+  // Add event listener for metric change to trigger automatic calculation for half bag
+  document.getElementById('metric').addEventListener('change', calculateTotalForHalfBag);
+
+  function calculateTotal() {
+    const quantityInput = document.getElementById('quantity');
+    const unitPriceInput = document.getElementById('unitPrice');
+    const totalCostInput = document.getElementById('totalCost');
+    const metricSelect = document.getElementById('metric');
+    const isKg = metricSelect.value === 'kg';
+    const isHalfBag = metricSelect.value === 'halfbag';
+
+    let quantity = parseFloat(quantityInput.value) || 0;
+    let unitPrice = parseFloat(unitPriceInput.value) || 0;
+
+    if (isKg) {
+        if (['bluecrown', 'coppens'].includes(selectedBrand)) {
+          unitPrice = 1000;
+        } else if (selectedBrand === 'aller-aqua' && !['2mm', '3mm', '4mm'].includes(selectedSize)) {
+          unitPrice = 4300;
+        } else if (selectedBrand === 'coppens' && selectedSize === '2mm (45%)') {
+          unitPrice = 2500;
+        }
+      } else if (isHalfBag) {
+        unitPrice = (unitPrice / 2) + 50;
+      }
+
+    const totalCost = quantity * unitPrice;
+
+    totalCostInput.value = totalCost.toFixed(2);
+  }
+
+  </script>
+</section>
+
+<section>
+    <h2>Recent Activity</h2>
+    <div class="dashboard-card">
+      <p>See the recent activity related to your stock inventory, such as stock additions, sales, and more.</p>
+
+      <table id="recentActivity" class="limited-rows">
+        <tr>
+          <th>Date</th>
+          <th>Item  Name</th>
+          <th>Item Amount</th>
+          <th>Item unit cost</th>
+          <th>Total cost </th>
+        </tr>
+        <!-- Add initial recent activity items here -->
+        <tr>
+          <td>2023-01-01</td>
+          <td>Bluecrown 2mm</td>
+          <td>5 bags</td>
+          <td>N14700.00</td>
+          <td>N73500</td>
+        </tr>
+        <tr>
+          <td>2023-01-02</td>
+          <td>Ecofloat 4mm</td>
+          <td>3 bags</td>
+          <td>N11500</td>
+          <td>N34500</td>
+        </tr>
+        <tr>
+            <td>2023-01-02</td>
+            <td>Ecofloat 4mm</td>
+            <td>3 bags</td>
+            <td>N11500</td>
+            <td>N34500</td>
+          </tr>
+          <tr>
+            <td>2023-01-02</td>
+            <td>Ace 4mm</td>
+            <td>3 bags</td>
+            <td>N11500</td>
+            <td>N34500</td>
+          </tr>
+          <tr>
+            <td>2023-01-02</td>
+            <td>Ecofloat 9mm</td>
+            <td>2 bags</td>
+            <td>N11500</td>
+            <td>N34500</td>
+          </tr>
+          <tr>
+            <td>2023-01-02</td>
+            <td>Ecofloat 6mm</td>
+            <td>6 bags</td>
+            <td>N11500</td>
+            <td>N34500</td>
+          </tr>
+        <!-- ... -->
+      </table>
+
+      <button class="show-more-button" onclick="showMoreActivity()">Show More</button>
+    </div>
+  </section>
+
+  <script>
+   function showMoreActivity() {
+      const recentActivityTable = document.getElementById('recentActivity');
+      recentActivityTable.classList.remove('limited-rows');
+    }
+  </script>
+
+<section>
+    <h2>Overview</h2>
+    <div class="dashboard-card">
+      <p>This is your stock inventory dashboard. It provides an overview of your stock across multiple locations.</p>
+
+      <h3>Current Available Stock (Interactive)</h3>
+      <ul id="stockList" class="hidden">
+        <!-- Add initial stock items here -->
+        <li>Product A - 50 units</li>
+        <li>Product B - 30 units</li>
+        <li>Product C - 20 units</li>
+        <!-- ... -->
+      </ul>
+
+      <button class="show-more-button" onclick="showMoreStock()">Show More</button>
+    </div>
+  </section>
+
+  <script>
+    function showMoreStock() {
+      const stockList = document.getElementById('stockList');
+      stockList.classList.remove('hidden');
+      stockList.style.height = stockList.scrollHeight + 'px';
+    }
+  </script>
+</body>
+</html>

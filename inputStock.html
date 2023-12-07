@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Inventory App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: flex-start; /* Align items to the left */
+      align-items: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-right: 20px; /* Adjust margin as needed */
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ccc; /* Added border */
+      padding-bottom: 10px;
+    }
+
+    .product-input-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .product-input {
+      width: 100px;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .upload-button {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .clear-button {
+      background-color: #f44336;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stock Inventory App</h1>
+  </header>
+  <nav>
+    <div class="dropdown">
+      <span>Menu</span>
+      <div class="dropdown-content">
+        <a href="#">Dashboard</a>
+        <a href="#">Input Stock</a>
+        <a href="#">sales records</a>
+        <a href="#">stock records</a>
+        <a href="#">Logout</a>
+        <a href="#">Settings</a>
+      </div>
+    </div>
+    <div class="navbar">
+        <div class="dropdown">
+          <select class="dropbtn" id="locationDropdown">Select Location</button>
+          <div class="dropdown-content" id="locationOptions">
+            <option value="Origan">Origan</option>
+            <option value="Ijuri">Ijuri</option>
+            <option value="CeleNiza reception">CeleNiza reception</option>
+            <option value="CeleNiza Warehouse">CeleNiza Warehouse</option>
+            <!-- Your location options go here -->
+        </select>
+          </div>
+        </div>
+      
+        <div class="selected-location" id="selectedLocation">Selected Location: None</div>
+      </div>
+      
+      <!-- ... (remaining HTML code) -->
+      
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const locationDropdown = document.getElementById('locationDropdown');
+          const locationOptions = document.getElementById('locationOptions');
+          const selectedLocation = document.getElementById('selectedLocation');
+      
+          // Function to update the selected location
+          function updateSelectedLocation() {
+            const selectedValue = locationDropdown.value;
+            selectedLocation.textContent = `Selected Location: ${selectedValue}`;
+          }
+      
+          // Event listener for the location dropdown change
+          locationDropdown.addEventListener('change', function () {
+            updateSelectedLocation();
+          });
+      
+          // Event listener for the initial update (on page load)
+          document.addEventListener('DOMContentLoaded', function () {
+            updateSelectedLocation();
+          });
+        });
+      </script>
+  </nav>
+
+  <section>
+    <h2>Stock Input</h2>
+    <ul class="product-list">
+      <li class="product-item">
+        <span>BlueCrown - 2mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>BlueCrown - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>BlueCrown - 4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>BlueCrown - 6mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>BlueCrown - 9mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ECOFLOAT - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ECOFLOAT - 4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ECOFLOAT - 6mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ECOFLOAT - 9mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ACE - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ACE - 4.5mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ACE - 6mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ACE - 8mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>VITAL - 2mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>VITAL - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>VITAL - 4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>VITAL - 6mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>VITAL - 9mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>AQUALIS - 2mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>AQUALIS - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>AQUALIS - 4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 0.2mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 0.4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 0.5mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 0.9mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 1.3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 2mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 3mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+      </li>
+      <li class="product-item">
+        <span>ALLER-AQUA - 4mm</span>
+        <div class="product-input-container">
+          <input class="product-input" type="number" placeholder="Bags">
+          <span>(Bags)</span>
+          <input class="product-input" type="number" placeholder="Kilograms">
+          <span>(Kilograms)</span>
+        </div>
+        <li class="product-item">
+            <span>COPPENS - 0.2mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 0.3mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 0.5mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 0.8mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 1.2mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 1.5mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 2mm(42%)</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>COPPENS - 2mm(45%)</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>ALPHA - 4mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>ALPHA - 6mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+          <li class="product-item">
+            <span>ALPHA - 8mm</span>
+            <div class="product-input-container">
+              <input class="product-input" type="number" placeholder="Bags">
+              <span>(Bags)</span>
+              <input class="product-input" type="number" placeholder="Kilograms">
+              <span>(Kilograms)</span>
+            </div>
+          </li>
+      </li>
+    </ul>
+    <button onclick="uploadStock()">Upload Stock</button>
+    <button class="clear-button" onclick="clearAllStock()">Clear All</button>
+
+    <script>
+      function uploadStock() {
+        // Add logic to collect input values and upload to the backend
+        alert("Stock uploaded successfully!");
+      }
+
+      function clearStock(button) {
+        // Find the parent product-item and clear the input values
+        const productItem = button.closest('.product-item');
+        const inputBoxes = productItem.querySelectorAll('.product-input');
+        inputBoxes.forEach(input => input.value = '');
+      }
+
+      function clearAllStock() {
+        // Clear input values in all product-items
+        const inputBoxes = document.querySelectorAll('.product-input');
+        inputBoxes.forEach(input => input.value = '');
+      }
+    </script>
+  </section>
+</body>
+</html>

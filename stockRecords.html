@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Records</title>
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: flex-start; /* Align items to the left */
+      align-items: center;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-right: 20px; /* Adjust margin as needed */
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    section {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .dashboard-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    #calendar {
+      margin-bottom: 20px;
+      padding: 8px;
+    }
+
+    #selectedDate {
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #displayDate {
+      color: #e44d26;
+    }
+
+    #stockTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    #stockTable th, #stockTable td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    #stockTable th {
+      background-color: #e44d26;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <h1>Stock Inventory Dashboard</h1>
+      </header>
+      <nav>
+        <div class="dropdown">
+          <span>Menu</span>
+          <div class="dropdown-content">
+            <a href="#">Dashboard</a>
+            <a href="#">Input Stock</a>
+            <a href="#">sales records</a>
+            <a href="#">stock records</a>
+            <a href="#">Logout</a>
+            <a href="#">Settings</a>
+          </div>
+        </div>
+        <div class="navbar">
+            <div class="dropdown">
+              <select class="dropbtn" id="locationDropdown">Select Location</button>
+              <div class="dropdown-content" id="locationOptions">
+                <option value="Origan">Origan</option>
+                <option value="Ijuri">Ijuri</option>
+                <option value="CeleNiza reception">CeleNiza reception</option>
+                <option value="CeleNiza Warehouse">CeleNiza Warehouse</option>
+                <!-- Your location options go here -->
+            </select>
+              </div>
+            </div>
+          
+            <div class="selected-location" id="selectedLocation">Selected Location: None</div>
+          </div>
+          
+          <!-- ... (remaining HTML code) -->
+          
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const locationDropdown = document.getElementById('locationDropdown');
+              const locationOptions = document.getElementById('locationOptions');
+              const selectedLocation = document.getElementById('selectedLocation');
+          
+              // Function to update the selected location
+              function updateSelectedLocation() {
+                const selectedValue = locationDropdown.value;
+                selectedLocation.textContent = `Selected Location: ${selectedValue}`;
+              }
+          
+              // Event listener for the location dropdown change
+              locationDropdown.addEventListener('change', function () {
+                updateSelectedLocation();
+              });
+          
+              // Event listener for the initial update (on page load)
+              document.addEventListener('DOMContentLoaded', function () {
+                updateSelectedLocation();
+              });
+            });
+          </script>
+      </nav>
+
+  <h2>Stock Records</h2>
+
+  <!-- Calendar for date selection -->
+  <label for="calendar">Select Date: </label>
+  <input type="date" id="calendar" onchange="displayStockRecords()">
+
+  <!-- Display the selected date -->
+  <p id="selectedDate">Selected Date: <span id="displayDate"></span></p>
+
+  <section>
+    <!-- Stock records in table format -->
+  <table id="stockTable">
+    <thead>
+      <tr>
+        <th>Brand size</th>
+        <th>Quantity (Bags)</th>
+        <th>Quantity (Kilograms)</th>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+      <tr>
+        <td>Bluecrown 2mm</td>
+        <td>3 bags</td>
+        <td>2.5kg</td>
+      </tr>
+    </thead>
+    <tbody id="stockBody"></tbody>
+  </table>
+  </section>
+  <script>
+    // Mock data for demonstration purposes
+    const stockData = [
+      { date: '2023-01-01', brand: 'BlueCrown', size: '3mm', quantity: 100, metric: 'bags' },
+      { date: '2023-01-01', brand: 'Alpha', size: '6mm', quantity: 50, metric: 'kilograms' },
+      { date: '2023-01-02', brand: 'Ovulin', size: 'Bottle', quantity: 5, metric: 'bottles' },
+      // Add more records as needed
+    ];
+
+    // Function to display stock records for the selected date
+    function displayStockRecords() {
+      const selectedDateElement = document.getElementById('displayDate');
+      const calendarInput = document.getElementById('calendar');
+      const stockBody = document.getElementById('stockBody');
+
+      // Get the selected date from the calendar input
+      const selectedDate = calendarInput.value;
+
+      // Display the selected date
+      selectedDateElement.textContent = selectedDate;
+
+      // Clear existing stock records
+      stockBody.innerHTML = '';
+
+      // Filter stockData based on the selected date
+      const filteredStock = stockData.filter(record => record.date === selectedDate);
+
+      // Populate the stock records in the table
+      filteredStock.forEach(record => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.brand}</td>
+          <td>${record.size}</td>
+          <td>${record.metric === 'bags' ? record.quantity : ''}</td>
+          <td>${record.metric === 'kilograms' ? record.quantity : ''}</td>
+        `;
+        stockBody.appendChild(row);
+      });
+    }
+
+    // Display stock records for the current date on page load
+    displayStockRecords();
+  </script>
+
+</body>
+</html>
